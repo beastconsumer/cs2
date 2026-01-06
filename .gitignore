@@ -1,0 +1,32 @@
+# Secrets / local env
+.env
+.env.*
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vs/
+.vscode/
+*.user
+*.suo
+*.log
+
+# .NET build outputs
+**/bin/
+**/obj/
+
+# Common temp folders
+.tmp/
+tmp/
+
+# Optional: archives
+metamod.zip
+
+# Do not commit bundled server/mod binaries (fetched at runtime by install scripts)
+game/csgo/addons/
+
+# Tools (optional to keep repo smaller; you can download them when needed)
+tools/**/rcon-*.zip
+tools/**/mcrcon-*.zip
+tools/**/rcon.exe
+tools/**/mcrcon.exe

@@ -1,0 +1,32 @@
+{
+  "CustomVotesEnabled": true,
+  "VoteCooldown": 60,
+  "ChatPrefix": "[{Green}Server{Default}]",
+  "ForceStyle": "none",
+  "CustomVotes": [
+    {
+      "Command": "rtv",
+      "CommandAliases": [],
+      "Description": "Trocar mapa",
+      "TimeToVote": 25,
+      "Options": {
+        "Dust2": {
+          "Text": "de_dust2",
+          "Commands": ["changelevel de_dust2"]
+        },
+        "Surf10x": {
+          "Text": "surf_10x_reloaded (Workshop)",
+          "Commands": ["host_workshop_map 3609060605"]
+        }
+      },
+      "DefaultOption": "Dust2",
+      "Style": "center",
+      "MinVotePercentage": -1,
+      "Permission": {
+        "RequiresAll": false,
+        "Permissions": []
+      }
+    }
+  ],
+  "ConfigVersion": 2
+}
