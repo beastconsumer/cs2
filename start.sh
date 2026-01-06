@@ -76,10 +76,34 @@ if [ -z "$BITS" ]; then
     fi
 fi
 
-if [[ -z $IP ]]; then
-    IP_ARGS=""
+is_valid_ipv4() {
+	local ip="$1" IFS='.'
+	local -a parts
+	[[ "$ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]] || return 1
+	read -r -a parts <<< "$ip"
+	(( ${#parts[@]} == 4 )) || return 1
+	for part in "${parts[@]}"; do
+		[[ "$part" =~ ^[0-9]+$ ]] || return 1
+		(( part >= 0 && part <= 255 )) || return 1
+	done
+	return 0
+}
+
+is_valid_ipv6() {
+	local ip="$1"
+	[[ "$ip" == *:* ]] || return 1
+	[[ "$ip" =~ ^[0-9A-Fa-f:]+$ ]] || return 1
+	return 0
+}
+
+BIND_IP_VALUE="${BIND_IP:-${IP:-}}"
+if [[ -z "$BIND_IP_VALUE" ]]; then
+	IP_ARGS=""
+elif is_valid_ipv4 "$BIND_IP_VALUE" || is_valid_ipv6 "$BIND_IP_VALUE"; then
+	IP_ARGS="-ip ${BIND_IP_VALUE}"
 else
-    IP_ARGS="-ip ${IP}"
+	echo "WARNING: Ignoring invalid IP bind value: '$BIND_IP_VALUE' (set BIND_IP to a valid IP or leave it empty)"
+	IP_ARGS=""
 fi
 
 # Steam networking ports are derived from PORT by default.
