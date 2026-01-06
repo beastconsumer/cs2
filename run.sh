@@ -14,6 +14,12 @@ if [[ "${LAN:-0}" == "0" ]] && (is_valid_ipv4 "$NET_PUBLIC_ADR" || is_valid_ipv6
     NET_PUBLIC_ADR_ARGS="+net_public_adr $NET_PUBLIC_ADR"
 fi
 
+# Prevent the server from hibernating when empty (hibernation can make it disappear from Steam server browser).
+HIBERNATE_ARGS=""
+if [[ "${LAN:-0}" == "0" ]]; then
+    HIBERNATE_ARGS="+sv_hibernate_when_empty 0"
+fi
+
 # 32 or 64 bit Operating System
 # If BITS environment variable is not set, try determine it
 if [ -z "$BITS" ]; then
@@ -111,6 +117,7 @@ echo /home/${user}/steamrt/run ./game/bin/linuxsteamrt64/cs2 --graphics-provider
     +game_type 0 \
     +game_mode 0 \
     +mapgroup mg_active \
+    $HIBERNATE_ARGS \
     $NET_PUBLIC_ADR_ARGS \
     +sv_lan $LAN \
 	+sv_password $SERVER_PASSWORD \
@@ -133,6 +140,7 @@ sudo -u $user /home/${user}/steamrt/run ./game/bin/linuxsteamrt64/cs2 --graphics
     +game_type 0 \
     +game_mode 0 \
     +mapgroup mg_active \
+    $HIBERNATE_ARGS \
     $NET_PUBLIC_ADR_ARGS \
     +sv_lan $LAN \
 	+sv_password $SERVER_PASSWORD \
