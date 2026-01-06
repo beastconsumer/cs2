@@ -202,6 +202,7 @@ Key | Default value | What is it
 `API_KEY` | `changeme` | To download maps from the workshop, your server needs access to the steam web api. To allow this you'll need an authorization key which you can generate [here](http://steamcommunity.com/dev/apikey)
 `BIND_IP` | `` | Not required. Bind the server to a specific IP address (adds `-ip`). Recommended over `IP` because some hosting panels inject their own `IP` value.
 `IP` | `` | Legacy. Same as `BIND_IP`. If your hosting panel auto-fills `IP` with a non-IP string, scripts will ignore it.
+`NET_PUBLIC_ADR` | auto-detect | Optional. Sets `+net_public_adr` (public address to advertise). Helpful in Docker/NAT so the server appears in the Steam server browser.
 `PORT` | `27015` | Server port
 `STEAM_PORT` | `PORT + 1` | Steam networking port (derived from `PORT`). Keeping this explicit helps with NAT/firewall rules and Steam server browser discovery.
 `CLIENT_PORT` | `PORT + 2` | Client networking port (derived from `PORT`). Keeping this explicit helps with NAT/firewall rules and Steam server browser discovery.

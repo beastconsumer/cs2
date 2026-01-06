@@ -350,6 +350,13 @@ if [ -z "$PUBLIC_IP" ]; then
     exit 1
 fi
 
+# In Docker/NAT setups, explicitly advertising the public address helps Steam master server listing.
+export NET_PUBLIC_ADR="${NET_PUBLIC_ADR:-$PUBLIC_IP}"
+NET_PUBLIC_ADR_ARGS=""
+if [[ "${LAN:-0}" == "0" ]] && (is_valid_ipv4 "$NET_PUBLIC_ADR" || is_valid_ipv6 "$NET_PUBLIC_ADR"); then
+    NET_PUBLIC_ADR_ARGS="+net_public_adr $NET_PUBLIC_ADR"
+fi
+
 # Update DuckDNS with our current IP
 if [ ! -z "$DUCK_TOKEN" ]; then
     echo url="http://www.duckdns.org/update?domains=$DUCK_DOMAIN&token=$DUCK_TOKEN&ip=$PUBLIC_IP" | curl -k -o /duck.log -K -
@@ -507,6 +514,7 @@ sudo -u $user LD_LIBRARY_PATH="./bin/linuxsteamrt64:$LD_LIBRARY_PATH" ./game/bin
     +game_type "${GAME_TYPE:-0}" \
     +game_mode "${GAME_MODE:-0}" \
     +mapgroup "${MAP_GROUP:-mg_active}" \
+    $NET_PUBLIC_ADR_ARGS \
     +sv_lan "$LAN" \
     +sv_password "$SERVER_PASSWORD" \
     +rcon_password "$RCON_PASSWORD" \
