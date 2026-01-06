@@ -7,7 +7,7 @@ namespace DamageInfo;
 public sealed class DamageInfoPlugin : BasePlugin
 {
 	public override string ModuleName => "DamageInfo";
-	public override string ModuleVersion => "1.0.1";
+	public override string ModuleVersion => "1.0.2";
 	public override string ModuleAuthor => "Local";
 	public override string ModuleDescription => "Shows hit location, damage, and remaining HP to the attacker.";
 
@@ -41,8 +41,8 @@ public sealed class DamageInfoPlugin : BasePlugin
 		var hitgroupName = HitgroupToPtBr(@event.Hitgroup);
 		var victimName = NormalizeName(victim.PlayerName);
 
-		// "telinha" no centro (layout mais limpo e mais legível)
-		attacker.PrintToCenter($"\n{victimName}\n-{damage} • {hitgroupName}\nHP {remainingHp}\n");
+		// "telinha" no centro: sem linhas em branco (elas fazem a fonte ficar minúscula)
+		attacker.PrintToCenter($"{victimName}\n-{damage} {hitgroupName}\nHP {remainingHp}");
 
 		return HookResult.Continue;
 	}
