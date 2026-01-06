@@ -202,6 +202,8 @@ Key | Default value | What is it
 `API_KEY` | `changeme` | To download maps from the workshop, your server needs access to the steam web api. To allow this you'll need an authorization key which you can generate [here](http://steamcommunity.com/dev/apikey)
 `IP` | `` | Not required. Allows the server IP to be set. Useful if a CS2 server needs to be bound to a specific IP address.
 `PORT` | `27015` | Server port
+`STEAM_PORT` | `PORT + 1` | Steam networking port (derived from `PORT`). Keeping this explicit helps with NAT/firewall rules and Steam server browser discovery.
+`CLIENT_PORT` | `PORT + 2` | Client networking port (derived from `PORT`). Keeping this explicit helps with NAT/firewall rules and Steam server browser discovery.
 `TICKRATE` | `128` | Server tickrate MM is 64, Faceit is 128
 `MAXPLAYERS` | `32` | Max player limit
 `CUSTOM_FOLDER` | `custom_files` | Folder of your own modifications to the mod that mirror the csgo/ structure and overwrite the mode files. More on that [here](#custom-files)

@@ -460,6 +460,12 @@ fi
 echo "Starting server on $PUBLIC_IP:$PORT"
 # Executar CS2 com LD_LIBRARY_PATH correto
 cd /home/${user}/cs2 || exit
+
+# Steam networking ports are derived from PORT by default.
+# Keeping them explicit helps with NAT/firewall rules and Steam server browser discovery.
+export STEAM_PORT="${STEAM_PORT:-$((PORT + 1))}"
+export CLIENT_PORT="${CLIENT_PORT:-$((PORT + 2))}"
+
 sudo -u $user LD_LIBRARY_PATH="./bin/linuxsteamrt64:$LD_LIBRARY_PATH" ./game/bin/linuxsteamrt64/cs2 \
     -dedicated \
     -console \
@@ -467,6 +473,8 @@ sudo -u $user LD_LIBRARY_PATH="./bin/linuxsteamrt64:$LD_LIBRARY_PATH" ./game/bin
     -tickrate "$TICKRATE" \
     "$IP_ARGS" \
     -port "$PORT" \
+    -steamport "$STEAM_PORT" \
+    -clientport "$CLIENT_PORT" \
     +map "${MAP:-de_dust2}" \
     +sv_visiblemaxplayers "$MAXPLAYERS" \
     -authkey "$API_KEY" \

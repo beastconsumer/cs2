@@ -255,6 +255,11 @@ chown -R ${user}:${user} /home/${user}/cs2
 
 cd /home/${user}/cs2
 
+# Steam networking ports are derived from PORT by default.
+# Keeping them explicit helps with NAT/firewall rules and Steam server browser discovery.
+export STEAM_PORT="${STEAM_PORT:-$((PORT + 1))}"
+export CLIENT_PORT="${CLIENT_PORT:-$((PORT + 2))}"
+
 # Define the file name
 FILE="game/csgo/gameinfo.gi"
 
@@ -291,6 +296,8 @@ echo /home/${user}/steamrt/run ./game/bin/linuxsteamrt64/cs2 --graphics-provider
     -tickrate $TICKRATE \
 	$IP_ARGS \
     -port $PORT \
+	-steamport $STEAM_PORT \
+	-clientport $CLIENT_PORT \
     +map de_dust2 \
     +sv_visiblemaxplayers $MAXPLAYERS \
     -authkey $API_KEY \
@@ -310,6 +317,8 @@ sudo -u $user /home/${user}/steamrt/run ./game/bin/linuxsteamrt64/cs2 --graphics
     -tickrate $TICKRATE \
 	$IP_ARGS \
     -port $PORT \
+	-steamport $STEAM_PORT \
+	-clientport $CLIENT_PORT \
     +map de_dust2 \
     +sv_visiblemaxplayers $MAXPLAYERS \
     -authkey $API_KEY \
