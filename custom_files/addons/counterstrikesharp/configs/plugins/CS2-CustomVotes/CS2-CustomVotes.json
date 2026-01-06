@@ -17,6 +17,14 @@
         "Surf10x": {
           "Text": "surf_10x_reloaded (Workshop)",
           "Commands": ["host_workshop_map 3609060605"]
+        },
+        "Ski2": {
+          "Text": "surf_ski_2 (Workshop)",
+          "Commands": ["host_workshop_map 3079877518"]
+        },
+        "Greatriver": {
+          "Text": "surf_greatriver (Workshop)",
+          "Commands": ["host_workshop_map 3071080706"]
         }
       },
       "DefaultOption": "Dust2",
