@@ -417,6 +417,26 @@ You can either Download this repo and extract it to where you want your server (
 
    `docker compose up`
 
+### Docker Compose notes (debugging)
+
+This repo uses:
+
+- Compose service name: `cs2_modded_server`
+- Container name: `cs2-modded-server`
+
+`docker compose exec` takes the **service name**, so use:
+
+```bash
+docker compose ps
+docker compose exec -T cs2_modded_server bash -lc 'ss -lunp | grep -E ":(27015|27016|27017)\\b" || true'
+```
+
+Alternatively you can exec by container name:
+
+```bash
+docker exec -it cs2-modded-server bash
+```
+
 ## Running in Kubernetes
 
 You should have a Kubernetes distribution already running. To set up a K8s Cluster please refer to [RKE2 Quickstart](https://docs.rke2.io/install/quickstart)

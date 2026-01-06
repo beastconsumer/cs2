@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     image: cs2-modded-server
     container_name: cs2-modded-server
+    # Note: `docker compose exec` uses the *service* name (`cs2_modded_server`),
+    # not `container_name`.
     env_file:
       - .env
     volumes:
