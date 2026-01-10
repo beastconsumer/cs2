@@ -6,6 +6,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugins_src", "plugins_src"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageInfo", "plugins_src\DamageInfo\DamageInfo.csproj", "{3A88D9D8-413F-3084-930D-DB8FEACDF7BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordAnnouncer", "plugins_src\DiscordAnnouncer\DiscordAnnouncer.csproj", "{4B99E0E9-524G-4195-A41E-EC9GFBDGE8CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoundSettings", "plugins_src\RoundSettings\RoundSettings.csproj", "{5C00F1FA-635H-5206-B52F-FD0HGCEHF9DG}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntiCamp", "plugins_src\AntiCamp\AntiCamp.csproj", "{6D11G2GB-746I-6317-C63G-GE1IHDFIG0EH}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Statistics", "plugins_src\Statistics\Statistics.csproj", "{7E22H3HC-857J-7428-D74H-HF2JIEGJH1FI}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerRanking", "plugins_src\PlayerRanking\PlayerRanking.csproj", "{8F33I4ID-968K-8539-E85I-IG3KJFHKJ2GJ}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,12 +26,37 @@ Global
 		{3A88D9D8-413F-3084-930D-DB8FEACDF7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A88D9D8-413F-3084-930D-DB8FEACDF7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A88D9D8-413F-3084-930D-DB8FEACDF7BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B99E0E9-524G-4195-A41E-EC9GFBDGE8CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B99E0E9-524G-4195-A41E-EC9GFBDGE8CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B99E0E9-524G-4195-A41E-EC9GFBDGE8CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B99E0E9-524G-4195-A41E-EC9GFBDGE8CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C00F1FA-635H-5206-B52F-FD0HGCEHF9DG}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C00F1FA-635H-5206-B52F-FD0HGCEHF9DG}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C00F1FA-635H-5206-B52F-FD0HGCEHF9DG}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C00F1FA-635H-5206-B52F-FD0HGCEHF9DG}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D11G2GB-746I-6317-C63G-GE1IHDFIG0EH}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D11G2GB-746I-6317-C63G-GE1IHDFIG0EH}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D11G2GB-746I-6317-C63G-GE1IHDFIG0EH}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D11G2GB-746I-6317-C63G-GE1IHDFIG0EH}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E22H3HC-857J-7428-D74H-HF2JIEGJH1FI}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E22H3HC-857J-7428-D74H-HF2JIEGJH1FI}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E22H3HC-857J-7428-D74H-HF2JIEGJH1FI}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E22H3HC-857J-7428-D74H-HF2JIEGJH1FI}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F33I4ID-968K-8539-E85I-IG3KJFHKJ2GJ}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F33I4ID-968K-8539-E85I-IG3KJFHKJ2GJ}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F33I4ID-968K-8539-E85I-IG3KJFHKJ2GJ}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F33I4ID-968K-8539-E85I-IG3KJFHKJ2GJ}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3A88D9D8-413F-3084-930D-DB8FEACDF7BE} = {D670B7AD-4A44-86A1-F037-DCDF3D495043}
+		{4B99E0E9-524G-4195-A41E-EC9GFBDGE8CF} = {D670B7AD-4A44-86A1-F037-DCDF3D495043}
+		{5C00F1FA-635H-5206-B52F-FD0HGCEHF9DG} = {D670B7AD-4A44-86A1-F037-DCDF3D495043}
+		{6D11G2GB-746I-6317-C63G-GE1IHDFIG0EH} = {D670B7AD-4A44-86A1-F037-DCDF3D495043}
+		{7E22H3HC-857J-7428-D74H-HF2JIEGJH1FI} = {D670B7AD-4A44-86A1-F037-DCDF3D495043}
+		{8F33I4ID-968K-8539-E85I-IG3KJFHKJ2GJ} = {D670B7AD-4A44-86A1-F037-DCDF3D495043}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D68BE58-D658-4E16-84FB-9FB536954D38}
