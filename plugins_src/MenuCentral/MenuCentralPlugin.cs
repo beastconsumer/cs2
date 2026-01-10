@@ -3,6 +3,7 @@ using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Attributes;
 using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Modules.Commands;
+using CounterStrikeSharp.API.Modules.Timers;
 using CounterStrikeSharp.API.Modules.Utils;
 
 namespace MenuCentral;
@@ -11,7 +12,7 @@ namespace MenuCentral;
 public sealed class MenuCentralPlugin : BasePlugin
 {
 	public override string ModuleName => "MenuCentral";
-	public override string ModuleVersion => "2.0.0";
+	public override string ModuleVersion => "2.1.0";
 	public override string ModuleAuthor => "ASTRA SURF COMBAT";
 	public override string ModuleDescription => "Menu HTML interativo estilo CS:GO com navegação por números.";
 
@@ -70,42 +71,47 @@ public sealed class MenuCentralPlugin : BasePlugin
 		if (player == null || !player.IsValid || IsBot(player))
 			return;
 
-		if (_playerMenus.ContainsKey(player.SteamID))
-		{
-			_playerMenus.Remove(player.SteamID);
-			player.PrintToCenterHtml("");
-			player.PrintToChat($" {ChatColors.Default}[MENU] Menu fechado.");
-		}
+		CloseMenu(player);
+		player.PrintToChat($" {ChatColors.Default}[MENU] Menu fechado.");
 	}
 
 	private void ShowMainMenu(CCSPlayerController player)
 	{
 		_playerMenus[player.SteamID] = 0; // Menu principal
 
-		// Menu HTML no canto esquerdo superior (estilo CS:GO) - apenas uma vez, sem spam
-		var menuHtml = $@"
-<font class='fontSize-xl' color='#FFD700'><b>═══════════════════════════</b></font><br/>
-<font class='fontSize-l' color='#FFFF00'><b>🎮 MENU PRINCIPAL</b></font><br/>
-<font class='fontSize-xl' color='#FFD700'><b>═══════════════════════════</b></font><br/>
-<font class='fontSize-m' color='#00FF00'><b>📊 ESTATÍSTICAS:</b></font><br/>
-<font class='fontSize-s' color='#FFFFFF'>  [1] !stats - Suas estatísticas</font><br/>
-<font class='fontSize-s' color='#FFFFFF'>  [2] !top - Top 10 jogadores</font><br/>
-<font class='fontSize-s' color='#FFFFFF'>  [3] !rank - Seu ranking</font><br/>
-<font class='fontSize-m' color='#87CEEB'><b>⭐ PONTOS E NÍVEIS:</b></font><br/>
-<font class='fontSize-s' color='#FFFFFF'>  [4] !points - Seus pontos</font><br/>
-<font class='fontSize-s' color='#FFFFFF'>  [5] !level - Seu nível</font><br/>
-<font class='fontSize-s' color='#FFFFFF'>  [6] !leaderboard - Top pontos</font><br/>
-<font class='fontSize-s' color='#FFFFFF'>  [7] !toprank - Top nível</font><br/>
-<font class='fontSize-m' color='#FFA500'><b>🎨 PERSONALIZAÇÃO:</b></font><br/>
-<font class='fontSize-s' color='#FFFFFF'>  [8] !trail - Trail visual</font><br/>
-<font class='fontSize-m' color='#9370DB'><b>🗺️  MAPAS:</b></font><br/>
-<font class='fontSize-s' color='#FFFFFF'>  [9] !rtv - Votar mapa</font><br/>
-<font class='fontSize-s' color='#CCCCCC'>Digite o número ou [0] para fechar</font><br/>
-<font class='fontSize-xl' color='#FFD700'><b>═══════════════════════════</b></font>
-";
+		// Menu exibido no chat (lado esquerdo da tela) - não interfere com avisos centrais
+		// O menu aparece uma vez quando o jogador digita !menu
+		DisplayMenuInChat(player);
 
-		player.PrintToCenterHtml(menuHtml);
 		player.PrintToChat($" {ChatColors.Gold}[MENU]{ChatColors.Default} Menu aberto! Digite o {ChatColors.Yellow}número{ChatColors.Default} da opção ou {ChatColors.Yellow}0{ChatColors.Default} para fechar.");
+	}
+
+	private void DisplayMenuInChat(CCSPlayerController player)
+	{
+		// Exibe menu formatado no chat (lado esquerdo da tela, não interfere com centro)
+		player.PrintToChat($" {ChatColors.Gold}═══════════════════════════════════════════════════");
+		player.PrintToChat($" {ChatColors.Yellow}          🎮 MENU PRINCIPAL - ASTRA SURF COMBAT 🎮");
+		player.PrintToChat($" {ChatColors.Gold}═══════════════════════════════════════════════════");
+		player.PrintToChat($" ");
+		player.PrintToChat($" {ChatColors.Green}📊 ESTATÍSTICAS E RANKING:");
+		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Yellow}[1]{ChatColors.Default} {ChatColors.Green}!stats{ChatColors.Default}     - Suas estatísticas (K/D, HS, etc)");
+		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Yellow}[2]{ChatColors.Default} {ChatColors.Green}!top{ChatColors.Default}       - Top 10 jogadores por kills");
+		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Yellow}[3]{ChatColors.Default} {ChatColors.Green}!rank{ChatColors.Default}      - Seu ranking no servidor");
+		player.PrintToChat($" ");
+		player.PrintToChat($" {ChatColors.LightBlue}⭐ PONTOS E NÍVEIS:");
+		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Yellow}[4]{ChatColors.Default} {ChatColors.LightBlue}!points{ChatColors.Default}    - Seus pontos e XP");
+		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Yellow}[5]{ChatColors.Default} {ChatColors.LightBlue}!level{ChatColors.Default}     - Seu nível e progresso");
+		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Yellow}[6]{ChatColors.Default} {ChatColors.LightBlue}!leaderboard{ChatColors.Default} - Top 10 por pontos");
+		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Yellow}[7]{ChatColors.Default} {ChatColors.LightBlue}!toprank{ChatColors.Default}   - Top 10 por nível");
+		player.PrintToChat($" ");
+		player.PrintToChat($" {ChatColors.Orange}🎨 PERSONALIZAÇÃO:");
+		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Yellow}[8]{ChatColors.Default} {ChatColors.Orange}!trail{ChatColors.Default}     - Liga/desliga trail visual");
+		player.PrintToChat($" ");
+		player.PrintToChat($" {ChatColors.Purple}🗺️  MAPAS:");
+		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Yellow}[9]{ChatColors.Default} {ChatColors.Purple}!rtv{ChatColors.Default}       - Votar para trocar mapa");
+		player.PrintToChat($" ");
+		player.PrintToChat($" {ChatColors.Default}💡 Digite o {ChatColors.Yellow}número{ChatColors.Default} da opção ou {ChatColors.Yellow}0{ChatColors.Default} para fechar");
+		player.PrintToChat($" {ChatColors.Gold}═══════════════════════════════════════════════════");
 	}
 
 	private void ExecuteMenuOption(CCSPlayerController player, int option)
@@ -140,10 +146,11 @@ public sealed class MenuCentralPlugin : BasePlugin
 
 	private void CloseMenu(CCSPlayerController player)
 	{
-		if (_playerMenus.ContainsKey(player.SteamID))
+		var steamId = player.SteamID;
+		
+		if (_playerMenus.ContainsKey(steamId))
 		{
-			_playerMenus.Remove(player.SteamID);
-			AddTimer(0.1f, () => player.PrintToCenterHtml(""));
+			_playerMenus.Remove(steamId);
 		}
 	}
 
