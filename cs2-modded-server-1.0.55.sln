@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerTrails", "plugins_src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MenuCentral", "plugins_src\MenuCentral\MenuCentral.csproj", "{DK88N9NI-E13P-D084-J30N-NL8POKMO7LO}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatTags", "plugins_src\ChatTags\ChatTags.csproj", "{EL99O0OJ-F24Q-E195-K41O-OM9QPLNP8MP}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +78,10 @@ Global
 		{DK88N9NI-E13P-D084-J30N-NL8POKMO7LO}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DK88N9NI-E13P-D084-J30N-NL8POKMO7LO}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DK88N9NI-E13P-D084-J30N-NL8POKMO7LO}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EL99O0OJ-F24Q-E195-K41O-OM9QPLNP8MP}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EL99O0OJ-F24Q-E195-K41O-OM9QPLNP8MP}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EL99O0OJ-F24Q-E195-K41O-OM9QPLNP8MP}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EL99O0OJ-F24Q-E195-K41O-OM9QPLNP8MP}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{BI66L7LG-C91N-B862-H18L-LJ6NMIKMN5JM} = {D670B7AD-4A44-86A1-F037-DCDF3D495043}
 		{CJ77M8MH-D02O-C973-I29M-MK7ONJLN6KN} = {D670B7AD-4A44-86A1-F037-DCDF3D495043}
 		{DK88N9NI-E13P-D084-J30N-NL8POKMO7LO} = {D670B7AD-4A44-86A1-F037-DCDF3D495043}
+		{EL99O0OJ-F24Q-E195-K41O-OM9QPLNP8MP} = {D670B7AD-4A44-86A1-F037-DCDF3D495043}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D68BE58-D658-4E16-84FB-9FB536954D38}

@@ -11,9 +11,30 @@ namespace MenuCentral;
 public sealed class MenuCentralPlugin : BasePlugin
 {
 	public override string ModuleName => "MenuCentral";
-	public override string ModuleVersion => "1.0.0";
+	public override string ModuleVersion => "2.0.0";
 	public override string ModuleAuthor => "ASTRA SURF COMBAT";
-	public override string ModuleDescription => "Menu centralizado (!menu) com todos os comandos disponíveis no servidor.";
+	public override string ModuleDescription => "Menu HTML interativo estilo CS:GO com navegação por números.";
+
+	private readonly Dictionary<ulong, int> _playerMenus = new(); // SteamID -> MenuPage
+
+	public override void Load(bool hotReload)
+	{
+		AddCommand("css_menu", "Abre menu principal interativo", OnMenuCommand);
+		AddCommand("css_help", "Abre menu principal interativo", OnMenuCommand);
+		AddCommand("css_comandos", "Abre menu principal interativo", OnMenuCommand);
+		
+		// Comandos numéricos para navegação
+		AddCommand("css_1", "Seleciona opção 1", OnNumberCommand);
+		AddCommand("css_2", "Seleciona opção 2", OnNumberCommand);
+		AddCommand("css_3", "Seleciona opção 3", OnNumberCommand);
+		AddCommand("css_4", "Seleciona opção 4", OnNumberCommand);
+		AddCommand("css_5", "Seleciona opção 5", OnNumberCommand);
+		AddCommand("css_6", "Seleciona opção 6", OnNumberCommand);
+		AddCommand("css_7", "Seleciona opção 7", OnNumberCommand);
+		AddCommand("css_8", "Seleciona opção 8", OnNumberCommand);
+		AddCommand("css_9", "Seleciona opção 9", OnNumberCommand);
+		AddCommand("css_0", "Fecha o menu", OnCloseMenuCommand);
+	}
 
 	[CommandHelper(minArgs: 0, usage: "", whoCanExecute: CommandUsage.CLIENT_ONLY)]
 	private void OnMenuCommand(CCSPlayerController? player, CommandInfo commandInfo)
@@ -24,56 +45,106 @@ public sealed class MenuCentralPlugin : BasePlugin
 		ShowMainMenu(player);
 	}
 
-	private void ShowMainMenu(CCSPlayerController player)
+	[CommandHelper(minArgs: 0, usage: "", whoCanExecute: CommandUsage.CLIENT_ONLY)]
+	private void OnNumberCommand(CCSPlayerController? player, CommandInfo commandInfo)
 	{
-		player.PrintToChat($" {ChatColors.Gold}═══════════════════════════════════════════════════");
-		player.PrintToChat($" {ChatColors.Yellow}          🎮 MENU PRINCIPAL - ASTRA SURF COMBAT 🎮");
-		player.PrintToChat($" {ChatColors.Gold}═══════════════════════════════════════════════════");
-		player.PrintToChat($" ");
-		player.PrintToChat($" {ChatColors.Green}📊 ESTATÍSTICAS E RANKING:");
-		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Green}!stats{ChatColors.Default}     - Suas estatísticas (K/D, HS, etc)");
-		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Green}!top{ChatColors.Default}       - Top 10 jogadores por kills");
-		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Green}!rank{ChatColors.Default}      - Seu ranking no servidor");
-		player.PrintToChat($" ");
-		player.PrintToChat($" {ChatColors.LightBlue}⭐ PONTOS E NÍVEIS:");
-		player.PrintToChat($" {ChatColors.Default}  {ChatColors.LightBlue}!points{ChatColors.Default}    - Seus pontos e XP");
-		player.PrintToChat($" {ChatColors.Default}  {ChatColors.LightBlue}!level{ChatColors.Default}     - Seu nível e progresso");
-		player.PrintToChat($" {ChatColors.Default}  {ChatColors.LightBlue}!leaderboard{ChatColors.Default} - Top 10 por pontos");
-		player.PrintToChat($" {ChatColors.Default}  {ChatColors.LightBlue}!toprank{ChatColors.Default}   - Top 10 por nível");
-		player.PrintToChat($" ");
-		player.PrintToChat($" {ChatColors.Orange}🎨 PERSONALIZAÇÃO:");
-		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Orange}!trail{ChatColors.Default}     - Liga/desliga trail visual");
-		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Orange}!trails{ChatColors.Default}    - Liga/desliga trail visual");
-		player.PrintToChat($" ");
-		player.PrintToChat($" {ChatColors.Purple}🗺️  MAPAS:");
-		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Purple}!rtv{ChatColors.Default}       - Votar para trocar mapa");
-		player.PrintToChat($" ");
-		player.PrintToChat($" {ChatColors.Red}⚙️  OUTROS:");
-		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Red}!menu{ChatColors.Default}      - Mostra este menu");
-		player.PrintToChat($" {ChatColors.Default}  {ChatColors.Red}!help{ChatColors.Default}      - Mostra este menu");
-		player.PrintToChat($" ");
-		player.PrintToChat($" {ChatColors.Gold}═══════════════════════════════════════════════════");
-		player.PrintToChat($" {ChatColors.Default}💡 Digite {ChatColors.Yellow}!<comando>{ChatColors.Default} no chat para usar");
-		player.PrintToChat($" {ChatColors.Gold}═══════════════════════════════════════════════════");
+		if (player == null || !player.IsValid || IsBot(player))
+			return;
 
-		// Mostra também no centro da tela
-		player.PrintToCenterHtml(@$"
-<font class='fontSize-l' color='#FFD700'>═══════════════════════════</font><br/>
-<font class='fontSize-xl' color='#FFFF00'>🎮 MENU PRINCIPAL</font><br/>
-<font class='fontSize-l' color='#FFD700'>═══════════════════════════</font><br/>
-<font color='#00FF00'>📊 !stats !top !rank</font><br/>
-<font color='#87CEEB'>⭐ !points !level !leaderboard</font><br/>
-<font color='#FFA500'>🎨 !trail</font><br/>
-<font color='#9370DB'>🗺️  !rtv</font><br/>
-<font class='fontSize-l' color='#FFD700'>═══════════════════════════</font>
-");
+		if (!_playerMenus.ContainsKey(player.SteamID))
+		{
+			player.PrintToChat($" {ChatColors.Red}[MENU]{ChatColors.Default} Digite {ChatColors.Yellow}!menu{ChatColors.Default} primeiro!");
+			return;
+		}
+
+		var command = commandInfo.GetCommandString.Replace("css_", "").Trim();
+		if (int.TryParse(command, out var option))
+		{
+			ExecuteMenuOption(player, option);
+		}
 	}
 
-	public override void Load(bool hotReload)
+	[CommandHelper(minArgs: 0, usage: "", whoCanExecute: CommandUsage.CLIENT_ONLY)]
+	private void OnCloseMenuCommand(CCSPlayerController? player, CommandInfo commandInfo)
 	{
-		AddCommand("css_menu", "Mostra menu principal com todos os comandos", OnMenuCommand);
-		AddCommand("css_help", "Mostra menu principal com todos os comandos", OnMenuCommand);
-		AddCommand("css_comandos", "Mostra menu principal com todos os comandos", OnMenuCommand);
+		if (player == null || !player.IsValid || IsBot(player))
+			return;
+
+		if (_playerMenus.ContainsKey(player.SteamID))
+		{
+			_playerMenus.Remove(player.SteamID);
+			player.PrintToCenterHtml("");
+			player.PrintToChat($" {ChatColors.Default}[MENU] Menu fechado.");
+		}
+	}
+
+	private void ShowMainMenu(CCSPlayerController player)
+	{
+		_playerMenus[player.SteamID] = 0; // Menu principal
+
+		// Menu HTML no canto esquerdo superior (estilo CS:GO) - apenas uma vez, sem spam
+		var menuHtml = $@"
+<font class='fontSize-xl' color='#FFD700'><b>═══════════════════════════</b></font><br/>
+<font class='fontSize-l' color='#FFFF00'><b>🎮 MENU PRINCIPAL</b></font><br/>
+<font class='fontSize-xl' color='#FFD700'><b>═══════════════════════════</b></font><br/>
+<font class='fontSize-m' color='#00FF00'><b>📊 ESTATÍSTICAS:</b></font><br/>
+<font class='fontSize-s' color='#FFFFFF'>  [1] !stats - Suas estatísticas</font><br/>
+<font class='fontSize-s' color='#FFFFFF'>  [2] !top - Top 10 jogadores</font><br/>
+<font class='fontSize-s' color='#FFFFFF'>  [3] !rank - Seu ranking</font><br/>
+<font class='fontSize-m' color='#87CEEB'><b>⭐ PONTOS E NÍVEIS:</b></font><br/>
+<font class='fontSize-s' color='#FFFFFF'>  [4] !points - Seus pontos</font><br/>
+<font class='fontSize-s' color='#FFFFFF'>  [5] !level - Seu nível</font><br/>
+<font class='fontSize-s' color='#FFFFFF'>  [6] !leaderboard - Top pontos</font><br/>
+<font class='fontSize-s' color='#FFFFFF'>  [7] !toprank - Top nível</font><br/>
+<font class='fontSize-m' color='#FFA500'><b>🎨 PERSONALIZAÇÃO:</b></font><br/>
+<font class='fontSize-s' color='#FFFFFF'>  [8] !trail - Trail visual</font><br/>
+<font class='fontSize-m' color='#9370DB'><b>🗺️  MAPAS:</b></font><br/>
+<font class='fontSize-s' color='#FFFFFF'>  [9] !rtv - Votar mapa</font><br/>
+<font class='fontSize-s' color='#CCCCCC'>Digite o número ou [0] para fechar</font><br/>
+<font class='fontSize-xl' color='#FFD700'><b>═══════════════════════════</b></font>
+";
+
+		player.PrintToCenterHtml(menuHtml);
+		player.PrintToChat($" {ChatColors.Gold}[MENU]{ChatColors.Default} Menu aberto! Digite o {ChatColors.Yellow}número{ChatColors.Default} da opção ou {ChatColors.Yellow}0{ChatColors.Default} para fechar.");
+	}
+
+	private void ExecuteMenuOption(CCSPlayerController player, int option)
+	{
+		CloseMenu(player);
+		
+		// Executa o comando correspondente via chat do jogador
+		var command = option switch
+		{
+			1 => "!stats",
+			2 => "!top",
+			3 => "!rank",
+			4 => "!points",
+			5 => "!level",
+			6 => "!leaderboard",
+			7 => "!toprank",
+			8 => "!trail",
+			9 => "!rtv",
+			_ => null
+		};
+
+		if (command != null)
+		{
+			// Envia comando via console do jogador
+			player.ExecuteClientCommand($"say {command}");
+		}
+		else
+		{
+			player.PrintToChat($" {ChatColors.Red}[MENU]{ChatColors.Default} Opção inválida!");
+		}
+	}
+
+	private void CloseMenu(CCSPlayerController player)
+	{
+		if (_playerMenus.ContainsKey(player.SteamID))
+		{
+			_playerMenus.Remove(player.SteamID);
+			AddTimer(0.1f, () => player.PrintToCenterHtml(""));
+		}
 	}
 
 	private static bool IsBot(CCSPlayerController player)
