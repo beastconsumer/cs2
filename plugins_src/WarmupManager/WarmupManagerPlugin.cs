@@ -3,6 +3,7 @@ using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Attributes;
 using CounterStrikeSharp.API.Modules.Timers;
 using CounterStrikeSharp.API.Modules.Utils;
+using CounterStrikeSharp.API.Modules.Cvars;
 
 namespace WarmupManager;
 
@@ -24,7 +25,7 @@ public sealed class WarmupManagerPlugin : BasePlugin
 		RegisterEventHandler<EventRoundStart>(OnRoundStart);
 		RegisterEventHandler<EventRoundEnd>(OnRoundEnd);
 		RegisterEventHandler<EventPlayerSpawn>(OnPlayerSpawn);
-		RegisterEventHandler<EventPlayerHurt>(OnPlayerHurt);
+
 
 		// Detecta quando warmup começa
 		AddTimer(1.0f, CheckWarmupStatus, TimerFlags.REPEAT);
@@ -86,35 +87,7 @@ public sealed class WarmupManagerPlugin : BasePlugin
 		return HookResult.Continue;
 	}
 
-	private HookResult OnPlayerHurt(EventPlayerHurt @event, GameEventInfo info)
-	{
-		// Durante warmup, não aplica dano real (opcional - pode remover se quiser dano normal)
-		if (_isWarmupActive)
-		{
-			var victim = @event.Userid;
-			if (victim != null && victim.IsValid && !IsBot(victim))
-			{
-				var pawn = victim.PlayerPawn?.Value;
-				if (pawn != null)
-				{
-					// Restaura vida após dano durante warmup (opcional)
-					AddTimer(0.1f, () =>
-					{
-						if (victim.IsValid && _isWarmupActive)
-						{
-							var victimPawn = victim.PlayerPawn?.Value;
-							if (victimPawn != null)
-							{
-								victimPawn.Health = 100;
-							}
-						}
-					});
-				}
-			}
-		}
 
-		return HookResult.Continue;
-	}
 
 	private void CheckWarmupStatus()
 	{
