@@ -14,8 +14,8 @@ public sealed class WarmupManagerPlugin : BasePlugin
 	public override string ModuleAuthor => "ASTRA SURF COMBAT";
 	public override string ModuleDescription => "Sistema melhorado de warmup com contador visual e proteção.";
 
-	private int _warmupTime = 15; // 15 segundos de warmup
-	private int _currentWarmupTime = 0;
+	private float _warmupTime = 15.0f;
+	private float _currentWarmupTime = 0.0f;
 	private bool _isWarmupActive = false;
 	private CounterStrikeSharp.API.Modules.Timers.Timer? _warmupTimer;
 
@@ -38,6 +38,10 @@ public sealed class WarmupManagerPlugin : BasePlugin
 			// Se warmup ainda não começou, inicia
 			if (!_isWarmupActive)
 			{
+				// Sincroniza com a cvar do jogo
+				var warmupCvar = ConVar.Find("mp_warmuptime");
+				_warmupTime = warmupCvar != null ? warmupCvar.GetPrimitiveValue<float>() : 15.0f;
+				
 				StartWarmup();
 			}
 		});
@@ -201,15 +205,7 @@ public sealed class WarmupManagerPlugin : BasePlugin
 		if (player == null || !player.IsValid)
 			return true;
 
-		try
-		{
-			var ip = player.IpAddress;
-			return !string.IsNullOrWhiteSpace(ip) && ip.StartsWith("127.");
-		}
-		catch
-		{
-			return true;
-		}
+		return player.IsBot;
 	}
 }
 

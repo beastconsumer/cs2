@@ -79,15 +79,7 @@ public sealed class ChatTagsPlugin : BasePlugin
 		if (player == null || !player.IsValid)
 			return true;
 
-		try
-		{
-			var ip = player.IpAddress;
-			return !string.IsNullOrWhiteSpace(ip) && ip.StartsWith("127.");
-		}
-		catch
-		{
-			return true;
-		}
+		return player.IsBot;
 	}
 
 	private class RankingData

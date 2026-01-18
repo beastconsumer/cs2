@@ -219,15 +219,8 @@ public sealed class AntiCampPlugin : BasePlugin
 		if (player == null || !player.IsValid)
 			return true;
 
-		try
-		{
-			var ip = player.IpAddress;
-			return !string.IsNullOrWhiteSpace(ip) && ip.StartsWith("127.");
-		}
-		catch
-		{
-			return true;
-		}
+		// CS2 API provides IsBot property
+		return player.IsBot;
 	}
 
 	private static string NormalizeName(string name)

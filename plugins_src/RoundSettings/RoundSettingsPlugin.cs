@@ -31,9 +31,10 @@ public sealed class RoundSettingsPlugin : BasePlugin
 	private static void ApplySettings()
 	{
 		// CS2 can override these via gamemode configs; re-apply at runtime.
+		// Surf Combat uses 10-minute rounds
 		Server.ExecuteCommand("mp_ignore_round_win_conditions 0");
-		Server.ExecuteCommand("mp_roundtime 5");
-		Server.ExecuteCommand("mp_roundtime_defuse 5");
-		Server.ExecuteCommand("mp_roundtime_hostage 5");
+		Server.ExecuteCommand("mp_roundtime 10");
+		Server.ExecuteCommand("mp_roundtime_defuse 10");
+		Server.ExecuteCommand("mp_roundtime_hostage 10");
 	}
 }

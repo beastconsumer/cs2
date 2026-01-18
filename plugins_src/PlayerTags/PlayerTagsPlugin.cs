@@ -28,6 +28,7 @@ public sealed class PlayerTagsPlugin : BasePlugin
 		RegisterEventHandler<EventRoundStart>(OnRoundStart);
 
 		AddTimer(1.0f, UpdateAllPlayerTags, TimerFlags.REPEAT);
+		AddTimer(300.0f, SaveTagData, TimerFlags.REPEAT);
 
 		LoadTagData();
 
@@ -127,8 +128,8 @@ public sealed class PlayerTagsPlugin : BasePlugin
 				// Atualiza nome se mudou
 				_playerTags[steamId].OriginalName = player.PlayerName;
 			}
-
-			SaveTagData();
+			
+			// Removido SaveTagData() daqui para evitar I/O excessivo
 		}
 		catch (Exception ex)
 		{
@@ -292,15 +293,7 @@ public sealed class PlayerTagsPlugin : BasePlugin
 		if (player == null || !player.IsValid)
 			return true;
 
-		try
-		{
-			var ip = player.IpAddress;
-			return !string.IsNullOrWhiteSpace(ip) && ip.StartsWith("127.");
-		}
-		catch
-		{
-			return true;
-		}
+		return player.IsBot;
 	}
 
 	private class PlayerTagData

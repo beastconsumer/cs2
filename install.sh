@@ -5,6 +5,8 @@
 
 # Variables
 user="steam"
+# Forced IP for VPS visibility
+export IP="89.116.214.105"
 BRANCH="master"
 
 # Check if MOD_BRANCH is set and not empty

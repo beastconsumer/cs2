@@ -4,6 +4,7 @@ using CounterStrikeSharp.API.Core.Attributes;
 using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Utils;
+using System.Text.Json;
 using System.Text;
 
 namespace Statistics;
@@ -18,6 +19,7 @@ public sealed class StatisticsPlugin : BasePlugin
 
 	// Armazena estatísticas por SteamID64
 	private readonly Dictionary<ulong, PlayerStats> _playerStats = new();
+	private readonly string _dataFilePath = "addons/counterstrikesharp/configs/plugins/Statistics/stats.json";
 
 	public override void Load(bool hotReload)
 	{
@@ -29,6 +31,15 @@ public sealed class StatisticsPlugin : BasePlugin
 		AddCommand("css_stats", "Mostra suas estatísticas", OnStatsCommand);
 		AddCommand("css_top", "Mostra top 10 jogadores", OnTopCommand);
 		AddCommand("css_rank", "Mostra seu ranking", OnRankCommand);
+
+		LoadStatsData();
+		AddTimer(300.0f, SaveStatsData, TimerFlags.REPEAT);
+	}
+
+	public override void Unload(bool hotReload)
+	{
+		SaveStatsData();
+		base.Unload(hotReload);
 	}
 
 	private HookResult OnPlayerDeath(EventPlayerDeath @event, GameEventInfo info)
@@ -247,15 +258,7 @@ public sealed class StatisticsPlugin : BasePlugin
 		if (player == null || !player.IsValid)
 			return true;
 
-		try
-		{
-			var ip = player.IpAddress;
-			return !string.IsNullOrWhiteSpace(ip) && ip.StartsWith("127.");
-		}
-		catch
-		{
-			return true;
-		}
+		return player.IsBot;
 	}
 
 	private static string NormalizeName(string name, int maxLength = 32)

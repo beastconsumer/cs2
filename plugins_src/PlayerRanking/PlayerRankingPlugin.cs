@@ -479,15 +479,7 @@ public sealed class PlayerRankingPlugin : BasePlugin
 		if (player == null || !player.IsValid)
 			return true;
 
-		try
-		{
-			var ip = player.IpAddress;
-			return !string.IsNullOrWhiteSpace(ip) && ip.StartsWith("127.");
-		}
-		catch
-		{
-			return true;
-		}
+		return player.IsBot;
 	}
 
 	private static string NormalizeName(string name, int maxLength = 32)

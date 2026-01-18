@@ -49,14 +49,9 @@ public sealed class DiscordAnnouncerPlugin : BasePlugin
 
 	private static bool IsProbablyBot(CCSPlayerController player)
 	{
-		try
-		{
-			var ip = player.IpAddress;
-			return !string.IsNullOrWhiteSpace(ip) && ip.StartsWith("127.");
-		}
-		catch
-		{
-			return false;
-		}
+		if (player == null || !player.IsValid)
+			return true;
+
+		return player.IsBot;
 	}
 }
